@@ -27,7 +27,7 @@ public class Launcher extends Application {
     private static CurrencyParentPane currencyParentPane;
 
     // private static Currency currency;
-    private static ArrayList<Currency> currencyList;
+    public static ArrayList<Currency> currencyList;
 
 
 
@@ -47,10 +47,10 @@ public class Launcher extends Application {
         primaryStage.setScene(mainScene);
         primaryStage.show();
 
-      /*  RefreshTask r =new RefreshTask();
+       RefreshTask r =new RefreshTask();
         Thread th= new Thread(r);
         th.setDaemon(true);
-        th.start();*/
+        th.start();
     }
 
     private void initMainPane() throws ExecutionException, InterruptedException {

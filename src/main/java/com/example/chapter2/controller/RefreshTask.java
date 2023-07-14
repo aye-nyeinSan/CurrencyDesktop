@@ -25,19 +25,20 @@ public class RefreshTask extends Task<Void> {
                     try {
                         Launcher.refreshPane();
                         // future task runs in background
-                        FutureTask futureTask = new FutureTask(new WatchTask());
-                        // System.out.println(futureTask);
-                        // java.util.concurrent.FutureTask@5e7f3097[Not completed, task = com.example.chapter2.controller.WatchTask@44a8d6c3]
-
-                        Platform.runLater(futureTask);
-                        boolean backgroundAlertTask = (boolean) futureTask.get();
-                        System.out.println("Background task: " + backgroundAlertTask);
 
                     } catch (ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             });
+            FutureTask futureTask = new FutureTask(new WatchTask());
+            // System.out.println(futureTask);
+            // java.util.concurrent.FutureTask@5e7f3097[Not completed, task = com.example.chapter2.controller.WatchTask@44a8d6c3]
+
+            Platform.runLater(futureTask);
+            boolean backgroundAlertTask = (boolean) futureTask.get();
+            System.out.println("Background task: " + backgroundAlertTask);
+
 
 
         }

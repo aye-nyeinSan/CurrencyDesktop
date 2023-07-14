@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import static com.example.chapter2.Launcher.currencyList;
+import static com.example.chapter2.Launcher.setCurrencyList;
+
 public class  AllEventHandlers {
     public static void onRefresh(){
         try{
@@ -29,7 +32,7 @@ public class  AllEventHandlers {
             if(code.isPresent()){
                 ArrayList<Currency> currencyList =Launcher.getCurrencyList();
                 Currency c= new Currency(code.get());
-                ArrayList<CurrencyEntity> c_list = FetchData.fetch_range(c.getShortCode(),8);
+                ArrayList<CurrencyEntity> c_list = FetchData.fetch_range(c.getShortCode(),30);
                 c.setHistorical(c_list);
                 c.setCurrent(c_list.get(c_list.size() -1));
                 currencyList.add(c);
@@ -97,5 +100,22 @@ public class  AllEventHandlers {
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
+    }
+
+    public static void OnUnWatch(String code) throws ExecutionException, InterruptedException {
+
+        ArrayList<Currency> currencyArrayList = Launcher.getCurrencyList();
+        int index= -1;
+        for (int i=0; i<currencyArrayList.size();i++){
+            if(currencyArrayList.get(i).getShortCode().equals(code)){
+                index = i;
+                break;
+            }
+        }
+        currencyArrayList.get(index).setWatch(false);
+        currencyArrayList.get(index).setWatchRate(0.0);
+        Launcher.setCurrencyList(currencyArrayList);
+        Launcher.refreshPane();
+
     }
 }

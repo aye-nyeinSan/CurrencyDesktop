@@ -20,6 +20,7 @@ public class CurrencyPane extends BorderPane {
     private Currency currency;
     private Button watch;
     private Button delete;
+    private Button unwatch;
     public CurrencyPane(Currency currency){
         this.setPadding(new Insets(0));
         this.setPrefSize(640,300);
@@ -38,6 +39,20 @@ public class CurrencyPane extends BorderPane {
                 AllEventHandlers.onDelete(currency.getShortCode());
             }
         });
+        this.unwatch = new Button("UnWatch");
+        this.unwatch.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    AllEventHandlers.OnUnWatch(currency.getShortCode());
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
 
      try {
          this.refreshPane(currency);
@@ -71,7 +86,7 @@ public class CurrencyPane extends BorderPane {
     private HBox genTopArea() {
         HBox topArea= new HBox(10);
         topArea.setPadding(new Insets(5));
-        topArea.getChildren().addAll(watch,delete);
+        topArea.getChildren().addAll(watch,unwatch,delete);
         topArea.setAlignment(Pos.CENTER_RIGHT);
         return topArea;
     }
