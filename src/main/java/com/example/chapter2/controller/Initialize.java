@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Initialize {
     public static ArrayList<Currency>  initialize_app() throws IOException {
         Currency c = new Currency("USD");
-        ArrayList<CurrencyEntity> c_list = FetchData.fetch_range(c.getShortCode(),8);
+        ArrayList<CurrencyEntity> c_list = FetchData.fetch_range(c.getShortCode(),30);
         c.setHistorical(c_list);
         c.setCurrent(c_list.get(c_list.size()-1));
 
