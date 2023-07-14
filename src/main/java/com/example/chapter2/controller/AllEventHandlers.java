@@ -3,6 +3,7 @@ package com.example.chapter2.controller;
 import com.example.chapter2.Launcher;
 import com.example.chapter2.model.Currency;
 import com.example.chapter2.model.CurrencyEntity;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 
 import java.util.ArrayList;
@@ -22,31 +23,42 @@ public class  AllEventHandlers {
     }
 
     public static void OnAdd(){
-        try{
-            TextInputDialog dialog =new TextInputDialog();
+        try {
+            TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Add Currency");
             dialog.setContentText("Currency code: ");
             dialog.setHeaderText(null);
             dialog.setGraphic(null);
             Optional<String> code = dialog.showAndWait();
-            if(code.isPresent()){
-                ArrayList<Currency> currencyList =Launcher.getCurrencyList();
-                Currency c= new Currency(code.get());
-                ArrayList<CurrencyEntity> c_list = FetchData.fetch_range(c.getShortCode(),30);
-                c.setHistorical(c_list);
-                c.setCurrent(c_list.get(c_list.size() -1));
-                currencyList.add(c);
-                Launcher.setCurrencyList(currencyList);
-                Launcher.refreshPane();
+            if (code.isPresent()) {
+                ArrayList<Currency> currencyList = Launcher.getCurrencyList();
+                Currency c = new Currency(code.get());
+                try {
+                    ArrayList<CurrencyEntity> c_list = FetchData.fetch_range(c.getShortCode(), 30);
+                    c.setHistorical(c_list);
+                    c.setCurrent(c_list.get(c_list.size() - 1));
+                    currencyList.add(c);
+                    Launcher.setCurrencyList(currencyList);
+                    Launcher.refreshPane();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText(null);
+                    alert.setTitle("Invalid Currency");
+                    alert.setContentText("This is invalid currency code. Try again!!");
+                    alert.showAndWait();
+                    OnAdd();
+                }
+
+
             }
-        }
-         catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+
+        } catch (Exception e) {
+
             e.printStackTrace();
         }
     }
-    public static void onDelete(String code){
+    public static void OnDelete(String code){
         try{
             ArrayList<Currency>currency_list =Launcher.getCurrencyList();
             int index = -1;

@@ -36,7 +36,7 @@ public class CurrencyPane extends BorderPane {
         this.delete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                AllEventHandlers.onDelete(currency.getShortCode());
+                AllEventHandlers.OnDelete(currency.getShortCode());
             }
         });
         this.unwatch = new Button("UnWatch");
