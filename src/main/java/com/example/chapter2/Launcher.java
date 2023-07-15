@@ -1,5 +1,6 @@
 package com.example.chapter2;
 
+import com.example.chapter2.controller.FetchData;
 import com.example.chapter2.controller.Initialize;
 import com.example.chapter2.controller.RefreshTask;
 import com.example.chapter2.model.Currency;
@@ -38,7 +39,7 @@ public class Launcher extends Application {
     primaryStage.setTitle("Currency Watcher");
     primaryStage.getIcons().add(new Image(Launcher.class.getResource("assets/cash-money-bag.png").toString()));
   //  this.primaryStage.setResizable(false);
-   // System.out.println(FetchData.fetch_range("USD",6));
+     //System.out.println(FetchData.fetch_range("USD",6));
         //this.currency = Initialize.initialize_app();
         currencyList = Initialize.initialize_app();
 

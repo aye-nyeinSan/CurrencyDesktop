@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.ExecutionException;
 
 public class TopPane extends FlowPane {
     private Button refresh;
@@ -31,7 +32,13 @@ public class TopPane extends FlowPane {
         add.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                AllEventHandlers.OnAdd();
+                try {
+                    AllEventHandlers.OnAdd();
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         update =new Label();

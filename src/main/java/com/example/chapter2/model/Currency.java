@@ -4,13 +4,17 @@ import java.util.ArrayList;
 
 public class Currency {
     private String shortCode;
+    private String baseCode;
     private CurrencyEntity current;
     private ArrayList<CurrencyEntity> historical;
     private Boolean isWatch;
     private Double watchRate;
 
+
+
     public Currency(String shortCode){
         this.shortCode = shortCode.toUpperCase();
+       // this.baseCode = baseCode.toUpperCase();
         this.isWatch = false; //monitor
         this.watchRate = 0.0; //monitor
     }
@@ -53,6 +57,13 @@ public class Currency {
 
     public void setWatchRate(Double watchRate) {
         this.watchRate = watchRate;
+    }
+    public String getBaseCode() {
+        return baseCode;
+    }
+
+    public void setBaseCode(String baseCode) {
+        this.baseCode = baseCode;
     }
 
 

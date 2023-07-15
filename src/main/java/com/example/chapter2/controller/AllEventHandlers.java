@@ -3,15 +3,16 @@ package com.example.chapter2.controller;
 import com.example.chapter2.Launcher;
 import com.example.chapter2.model.Currency;
 import com.example.chapter2.model.CurrencyEntity;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextInputDialog;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-import static com.example.chapter2.Launcher.currencyList;
-import static com.example.chapter2.Launcher.setCurrencyList;
 
 public class  AllEventHandlers {
     public static void onRefresh(){
@@ -22,17 +23,33 @@ public class  AllEventHandlers {
             e.printStackTrace();}
     }
 
-    public static void OnAdd(){
+    public static void OnAdd() throws ExecutionException, InterruptedException {
         try {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Add Currency");
-            dialog.setContentText("Currency code: ");
+            dialog.setContentText("Currency Code: ");
+          //  dialog.setContentText("To Currency Code: ");
+
             dialog.setHeaderText(null);
             dialog.setGraphic(null);
-            Optional<String> code = dialog.showAndWait();
-            if (code.isPresent()) {
+
+            //Optional<String> tar_code = dialog.showAndWait();
+
+           /* Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+            TextField inputField = dialog.getEditor();
+            BooleanBinding isInvalid = Bindings.createBooleanBinding(() -> isInValid(inputField.getText()), inputField.textProperty());
+            okButton.disableProperty().bind(isInvalid);*/
+
+            //Icon
+            Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(
+                    new Image(Launcher.class.getResource("assets/cash-money-bag.png").toString()));
+
+
+            Optional<String> src_code = dialog.showAndWait();
+            if (src_code.isPresent()) {
                 ArrayList<Currency> currencyList = Launcher.getCurrencyList();
-                Currency c = new Currency(code.get());
+                Currency c = new Currency(src_code.get());
                 try {
                     ArrayList<CurrencyEntity> c_list = FetchData.fetch_range(c.getShortCode(), 30);
                     c.setHistorical(c_list);
@@ -41,7 +58,7 @@ public class  AllEventHandlers {
                     Launcher.setCurrencyList(currencyList);
                     Launcher.refreshPane();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                   // e.printStackTrace();
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText(null);
                     alert.setTitle("Invalid Currency");
@@ -53,10 +70,16 @@ public class  AllEventHandlers {
 
             }
 
-        } catch (Exception e) {
 
-            e.printStackTrace();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+
+    }
+    public static boolean isInValid(String text){
+        return false;
     }
     public static void OnDelete(String code){
         try{

@@ -22,14 +22,16 @@ public class FetchData {
         String dateEnd= LocalDate.now().format(formatter);
         String dateStart = LocalDate.now().minusDays(N).format(formatter);
         //representing the date N days ago.
-        System.out.print("Start: "+dateStart+", "+"End: "+ dateEnd);
+        System.out.println("Start: "+dateStart+", "+"End: "+ dateEnd);
+        String base ="THB" ;
         String url_str = String.format("https://api.exchangerate.host/timeseries?" +
-                          "base=THB&symbols=%s&start_date=%s&end_date=%s",src,dateStart,dateEnd); //USD,11,5
+                          "base=%s&symbols=%s&start_date=%s&end_date=%s",base,src,dateStart,dateEnd);
+        System.out.println("Currency code (src): "+src);//USD,11,5
         ArrayList<CurrencyEntity> histList= new ArrayList<CurrencyEntity>();
         String retrievedJson = null;
         try {
            retrievedJson = IOUtils.toString(new URL(url_str), Charset.defaultCharset());
-            //System.out.println(retrievedJson);
+           // System.out.println(retrievedJson);
         }
         catch(MalformedInputException | MalformedURLException e){
             System.out.println("Encountered a Malformed url exception");
