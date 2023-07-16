@@ -1,7 +1,9 @@
 package com.example.chapter2.view;
 
 import com.example.chapter2.controller.AllEventHandlers;
+import com.example.chapter2.controller.draw.DrawCurrencyInfoTask;
 import com.example.chapter2.controller.draw.DrawGraphTask;
+import com.example.chapter2.controller.draw.DrawTopAreaTask;
 import com.example.chapter2.model.Currency;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,7 +24,7 @@ public class CurrencyPane extends BorderPane {
     private Button delete;
     private Button unwatch;
     public CurrencyPane(Currency currency){
-        this.setPadding(new Insets(0));
+      /*  this.setPadding(new Insets(0));
         this.setPrefSize(640,300);
         this.setStyle("-fx-border-color: black");
         this.watch =new Button("Watch");
@@ -52,7 +54,7 @@ public class CurrencyPane extends BorderPane {
                 }
             }
         });
-
+*/
 
      try {
          this.refreshPane(currency);
@@ -67,14 +69,21 @@ public class CurrencyPane extends BorderPane {
 
     public void refreshPane(Currency currency) throws ExecutionException,InterruptedException {
         this.currency = currency;
-        Pane currencyInfo = genInfoPane();
+       // Pane currencyInfo = genInfoPane();
 
 
         FutureTask futureTask=new FutureTask<VBox>(new DrawGraphTask(currency));
+        FutureTask futureCurrencyInfoTask = new FutureTask(new DrawCurrencyInfoTask(currency));
+        FutureTask futureTopArea = new FutureTask(new DrawTopAreaTask(currency));
+
         ExecutorService executorService=Executors.newSingleThreadExecutor();
         executorService.execute(futureTask);
+        executorService.execute(futureCurrencyInfoTask);
+
+        Pane currencyInfo = (Pane) futureCurrencyInfoTask.get();
         VBox currencyGraph = (VBox) futureTask.get();
-        Pane topArea = genTopArea();
+        Pane topArea =(Pane) futureTopArea.get();
+      //  Pane topArea = genTopArea();
 
         this.setTop(topArea);
         this.setCenter(currencyGraph);
@@ -83,7 +92,7 @@ public class CurrencyPane extends BorderPane {
 
     }
 
-    private HBox genTopArea() {
+    private HBox genTopArea()  {
         HBox topArea= new HBox(10);
         topArea.setPadding(new Insets(5));
         topArea.getChildren().addAll(watch,unwatch,delete);

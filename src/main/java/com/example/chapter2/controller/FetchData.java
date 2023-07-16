@@ -31,7 +31,7 @@ public class FetchData {
         String retrievedJson = null;
         try {
            retrievedJson = IOUtils.toString(new URL(url_str), Charset.defaultCharset());
-           // System.out.println(retrievedJson);
+             System.out.println(retrievedJson);
         }
         catch(MalformedInputException | MalformedURLException e){
             System.out.println("Encountered a Malformed url exception");
