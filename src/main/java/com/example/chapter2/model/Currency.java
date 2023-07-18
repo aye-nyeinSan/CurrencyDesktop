@@ -10,11 +10,11 @@ public class Currency {
     private Boolean isWatch;
     private Double watchRate;
 
+ public Currency(){}
 
-
-    public Currency(String shortCode){
+    public Currency(String baseCode,String shortCode){
         this.shortCode = shortCode.toUpperCase();
-       // this.baseCode = baseCode.toUpperCase();
+        this.baseCode = baseCode.toUpperCase();
         this.isWatch = false; //monitor
         this.watchRate = 0.0; //monitor
     }

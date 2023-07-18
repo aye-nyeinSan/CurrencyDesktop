@@ -5,33 +5,34 @@ import com.example.chapter2.model.Currency;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
-public class DrawTopPane extends FlowPane implements Callable<FlowPane> {
+public class DrawTopPane  implements Callable<Pane> {
  private Currency currency;
  private Button watch,delete,unwatch;
     public DrawTopPane(Currency currency){
         this.currency=currency;
     }
+
+
     @Override
-    public FlowPane call() throws Exception {
-    FlowPane toppane= new FlowPane();
-        this.setPadding(new Insets(10));
-        this.setHgap(10);
-        this.setPrefSize(640, 20);
-        this.setStyle("-fx-border-color: black");
-        this.watch = new Button("Watch");
+    public Pane call() throws Exception {
+
+        this.watch =new Button("Watch");
         this.watch.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 AllEventHandlers.OnWatch(currency.getShortCode());
             }
         });
-        this.delete = new Button("Delete");
+        this.delete =new Button("Delete");
         this.delete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -51,8 +52,13 @@ public class DrawTopPane extends FlowPane implements Callable<FlowPane> {
                 }
             }
         });
-        toppane.getChildren().addAll(watch,unwatch,delete);
-        return toppane ;
+        HBox topArea= new HBox(10);
+        topArea.setPadding(new Insets(5));
+        topArea.getChildren().addAll(watch,unwatch,delete);
+        topArea.setAlignment(Pos.CENTER_RIGHT);
+
+
+        return topArea;
     }
 }
 

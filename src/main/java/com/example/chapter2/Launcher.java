@@ -1,6 +1,5 @@
 package com.example.chapter2;
 
-import com.example.chapter2.controller.FetchData;
 import com.example.chapter2.controller.Initialize;
 import com.example.chapter2.controller.RefreshTask;
 import com.example.chapter2.model.Currency;

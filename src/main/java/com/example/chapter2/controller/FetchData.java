@@ -18,20 +18,20 @@ import java.util.Iterator;
 
 public class FetchData {
     public static final DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    public static ArrayList<CurrencyEntity> fetch_range (String src, int N){
+    public static ArrayList<CurrencyEntity> fetch_range (String base, String src, int N){
         String dateEnd= LocalDate.now().format(formatter);
         String dateStart = LocalDate.now().minusDays(N).format(formatter);
         //representing the date N days ago.
         System.out.println("Start: "+dateStart+", "+"End: "+ dateEnd);
-        String base ="THB" ;
+       // String base ="THB" ;
         String url_str = String.format("https://api.exchangerate.host/timeseries?" +
                           "base=%s&symbols=%s&start_date=%s&end_date=%s",base,src,dateStart,dateEnd);
-        System.out.println("Currency code (src): "+src);//USD,11,5
+        System.out.println("Currency code (src): "+src +" and base currency: "+base);//USD,11,5
         ArrayList<CurrencyEntity> histList= new ArrayList<CurrencyEntity>();
         String retrievedJson = null;
         try {
            retrievedJson = IOUtils.toString(new URL(url_str), Charset.defaultCharset());
-             System.out.println(retrievedJson);
+           System.out.println(retrievedJson);
         }
         catch(MalformedInputException | MalformedURLException e){
             System.out.println("Encountered a Malformed url exception");

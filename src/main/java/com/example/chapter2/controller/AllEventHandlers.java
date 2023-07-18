@@ -22,23 +22,50 @@ public class  AllEventHandlers {
         catch(Exception e){
             e.printStackTrace();}
     }
+    public static void OnBaseChange() throws ExecutionException, InterruptedException {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Base Currency");
+        dialog.setContentText("Currency Code: ");
+        dialog.setHeaderText(null);
+        dialog.setGraphic(null);
+        Optional<String> baseCode = dialog.showAndWait();
+
+
+        if (baseCode.isPresent()) {
+            ArrayList<Currency> currencyList = Launcher.getCurrencyList();
+            Currency c = new Currency();
+            c.setBaseCode(baseCode.get());
+            c.setShortCode("USD");
+
+
+            try {
+                ArrayList<CurrencyEntity> c_list = FetchData.fetch_range(c.getBaseCode(),c.getShortCode(), 30);
+                c.setHistorical(c_list);
+                c.setCurrent(c_list.get(c_list.size() - 1));
+                currencyList.add(c);
+                Launcher.setCurrencyList(currencyList);
+                Launcher.refreshPane();
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setTitle("Invalid Currency");
+                alert.setContentText("This is invalid currency code. Try again!!");
+                alert.showAndWait();
+                OnBaseChange();
+            }
+
+        }
+    }
 
     public static void OnAdd() throws ExecutionException, InterruptedException {
         try {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Add Currency");
             dialog.setContentText("Currency Code: ");
-          //  dialog.setContentText("To Currency Code: ");
+
 
             dialog.setHeaderText(null);
             dialog.setGraphic(null);
-
-            //Optional<String> tar_code = dialog.showAndWait();
-
-           /* Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
-            TextField inputField = dialog.getEditor();
-            BooleanBinding isInvalid = Bindings.createBooleanBinding(() -> isInValid(inputField.getText()), inputField.textProperty());
-            okButton.disableProperty().bind(isInvalid);*/
 
             //Icon
             Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
@@ -49,9 +76,11 @@ public class  AllEventHandlers {
             Optional<String> src_code = dialog.showAndWait();
             if (src_code.isPresent()) {
                 ArrayList<Currency> currencyList = Launcher.getCurrencyList();
-                Currency c = new Currency(src_code.get());
+                Currency c=new Currency();
+                c.setShortCode(src_code.get());
+                c.setBaseCode("THB");
                 try {
-                    ArrayList<CurrencyEntity> c_list = FetchData.fetch_range(c.getShortCode(), 30);
+                    ArrayList<CurrencyEntity> c_list = FetchData.fetch_range(c.getBaseCode(),c.getShortCode(), 30);
                     c.setHistorical(c_list);
                     c.setCurrent(c_list.get(c_list.size() - 1));
                     currencyList.add(c);
