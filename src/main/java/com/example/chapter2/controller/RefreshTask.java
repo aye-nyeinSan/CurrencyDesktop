@@ -15,7 +15,7 @@ public class RefreshTask extends Task<Void> {
     protected Void call() throws Exception {
         for (;;) { //repeated loop
             try {
-                Thread.sleep((long) (6 * 1e3)); //minutes 6 * 10^3 >> 10^3 i s milliseconds
+                Thread.sleep((long) (60 * 1e3)); //minutes 6 * 10^3 >> 10^3 i s milliseconds
                 System.out.println("Sleep is in " + 6 * 1e3);
             } catch (InterruptedException e) {
                 System.out.print("Encounter in thread sleep.");

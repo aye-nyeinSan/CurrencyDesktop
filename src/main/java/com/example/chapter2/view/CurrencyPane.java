@@ -29,39 +29,39 @@ public class CurrencyPane extends BorderPane {
         this.setPadding(new Insets(0));
         this.setPrefSize(640,300);
         this.setStyle("-fx-border-color: black");
-//            this.watch =new Button("Watch");
-//        this.watch.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                AllEventHandlers.OnWatch(currency.getShortCode());
-//            }
-//        });
-//        this.delete =new Button("Delete");
-//        this.delete.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                AllEventHandlers.OnDelete(currency.getShortCode());
-//            }
-//        });
-//        this.unwatch = new Button("UnWatch");
-//        this.unwatch.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                try {
-//                    AllEventHandlers.OnUnWatch(currency.getShortCode());
-//                } catch (ExecutionException e) {
-//                    throw new RuntimeException(e);
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
+            this.watch =new Button("Watch");
+        this.watch.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                AllEventHandlers.OnWatch(currency.getShortCode());
+            }
+        });
+        this.delete =new Button("Delete");
+        this.delete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                AllEventHandlers.OnDelete(currency.getShortCode());
+            }
+        });
+        this.unwatch = new Button("UnWatch");
+        this.unwatch.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    AllEventHandlers.OnUnWatch(currency.getShortCode());
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
 
      try {
          this.refreshPane(currency);
      }catch(ExecutionException e){
-        System.out.println("Encountered an execution exception");
+        System.out.println("Encountered an CurrencyPane execution exception");
      }
      catch(InterruptedException e){
          System.out.println("Encountered an interrupted exception");
@@ -78,20 +78,23 @@ public class CurrencyPane extends BorderPane {
         FutureTask futureTask=new FutureTask<VBox>(new DrawGraphTask(currency));
 
         FutureTask futureCurrencyInfoTask = new FutureTask(new DrawCurrencyInfoTask(currency));
-        FutureTask futureTopPane = new FutureTask(new DrawTopPane(currency));
+      //  FutureTask futureTopPane = new FutureTask(new DrawTopPane(currency));
+        FutureTask futureTopAreaTask= new FutureTask(new DrawTopAreaTask(watch,unwatch,delete));
 
 
         ExecutorService executorService=Executors.newSingleThreadExecutor();
         executorService.execute(futureTask);
         executorService.execute(futureCurrencyInfoTask);
-        executorService.execute(futureTopPane);
+        //executorService.execute(futureTopPane);
+        executorService.execute(futureTopAreaTask);
 
 
           Pane currencyInfo = (Pane) futureCurrencyInfoTask.get();
           VBox currencyGraph = (VBox) futureTask.get();
-          Pane topArea =(Pane) futureTopPane.get();
+        //  Pane topArea =(Pane) futureTopPane.get();
+          Pane TopArea= (Pane) futureTopAreaTask.get();
 
-        this.setTop(topArea);
+        this.setTop(TopArea);
         this.setCenter(currencyGraph);
         this.setLeft(currencyInfo);
 

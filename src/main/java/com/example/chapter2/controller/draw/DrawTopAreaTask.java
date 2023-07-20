@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -16,12 +17,13 @@ import java.util.concurrent.Callable;
 
 public class DrawTopAreaTask   implements Callable<Pane> {
     Currency currency;
+    Button watch,delete,unwatch;
 
+    public DrawTopAreaTask(Button watch,Button unwatch,Button delete){
 
-    public DrawTopAreaTask(Currency currency){
-
-        this.currency=currency;
-
+    this.watch=watch;
+    this.unwatch=unwatch;
+    this.delete =delete;
 
     }
     @Override
@@ -29,7 +31,7 @@ public class DrawTopAreaTask   implements Callable<Pane> {
         HBox topArea= new HBox(10);
         topArea.setPadding(new Insets(5));
 
-          topArea.getChildren().addAll();
+          topArea.getChildren().addAll(watch,unwatch,delete);
 
         topArea.setAlignment(Pos.CENTER_RIGHT);
         return topArea;

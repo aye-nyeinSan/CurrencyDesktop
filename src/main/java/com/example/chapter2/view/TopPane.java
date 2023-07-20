@@ -1,5 +1,6 @@
 package com.example.chapter2.view;
 
+import com.example.chapter2.Launcher;
 import com.example.chapter2.controller.AllEventHandlers;
 import com.example.chapter2.model.Currency;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class TopPane extends FlowPane {
@@ -31,12 +33,12 @@ public class TopPane extends FlowPane {
                 AllEventHandlers.onRefresh();
             }
         });
-        base =new Button("Change Base");
+        base =new Button("Add");
         base.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    AllEventHandlers.OnBaseChange();
+                    AllEventHandlers.OnBaseChange(currency);
                 } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 } catch (InterruptedException e) {
@@ -44,27 +46,27 @@ public class TopPane extends FlowPane {
                 }
             }
         });
-        add =new Button("Add");
-        add.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                try {
-                    AllEventHandlers.OnAdd();
-                } catch (ExecutionException e) {
-                    throw new RuntimeException(e);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+//        add =new Button("Add");
+//        add.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                try {
+//
+//                    AllEventHandlers.OnAdd(currency);
+//                } catch (ExecutionException e) {
+//                    throw new RuntimeException(e);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
         update =new Label();
-        baseCurrency = new Label();
         refreshPane();
-        this.getChildren().addAll(refresh,base,add,baseCurrency,update);
+        this.getChildren().addAll(refresh,base,update);
     }
 
     public void refreshPane() {
-        //baseCurrency.setText(String.format("Base Currency : %s", this.currency.getBaseCode().toString()));
+
         update.setText((String.format("Last update : %s", LocalDateTime.now().toString())));
     }
 
